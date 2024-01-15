@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: black;
+    color: beige;
+}
+
+#movie{
+    max-width: 200px;
+}
+
+#movieInfo{
+    max-width: 600px;
+}

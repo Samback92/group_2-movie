@@ -91,9 +91,14 @@ function displayMovieDetails(movie) {
     const releaseDate = document.createElement('p');
     releaseDate.textContent = `Release Date: ${movie.release_date}`;
 
+    const movieImg = document.createElement("img");
+    movieImg.style.width = "500px";
+    movieImg.src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
+
     movieInfo.appendChild(title);
     movieInfo.appendChild(overview);
     movieInfo.appendChild(releaseDate);
+    movieInfo.appendChild(movieImg);
 }
 
 function printMovieInfo(movie) {

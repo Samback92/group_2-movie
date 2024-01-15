@@ -172,10 +172,20 @@ function searchByGenre() {
     }
 }
 
+
 function addToFavorites(movie) {
-    favorites.push(movie);
-    saveFavoritesToLocalStorage();
-    alert(`${movie.title} has been added to your favorites!`);
+    if (!isMovieInFavorites(movie)) {
+        favorites.push(movie);
+        saveFavoritesToLocalStorage();
+        alert(`${movie.title} has been added to your favorites!`);
+    } else {
+        alert(`${movie.title} is already in your favorites.`);
+    }
+}
+
+function isMovieInFavorites(movie) {
+    // Kontrollera om filmen redan finns i favoriter baserat på ID eller annan identifierare
+    return favorites.some(favorite => favorite.id === movie.id);
 }
 
 function saveFavoritesToLocalStorage() {
@@ -195,5 +205,6 @@ function showFavorites() {
 
     // Display favorites
     displayResults(favorites);
+    
 }
 

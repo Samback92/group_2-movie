@@ -119,3 +119,47 @@ function printMovieInfo(movie) {
     movieDiv.append(movieHeadline, movieText, movieImg);
     movieInfo.appendChild(movieDiv);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchGenres();
+});
+
+function fetchGenres() {
+    const apiKey = '88d6f906b386ac47c004701d8f545df8';
+    const genreSelect = document.getElementById('genreSelect');
+    const apiUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`;
+
+    const emptyOption = document.createElement('option');
+    emptyOption.value = '';
+    emptyOption.text = 'Select a genre';
+    genreSelect.appendChild(emptyOption);
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            data.genres.forEach(genre => {
+                const option = document.createElement('option');
+                option.value = genre.id;
+                option.text = genre.name;
+                genreSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching genres:', error));
+}
+
+
+function searchByGenre() {
+    const selectedGenreId = document.getElementById('genreSelect').value;
+
+    if (selectedGenreId) {
+        const apiUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${selectedGenreId}&api_key=88d6f906b386ac47c004701d8f545df8`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => displayResults(data.results))
+            .catch(error => console.error('Error fetching data:', error));
+    } else {
+        alert('Please select a genre.');
+    }
+}
+

@@ -74,36 +74,12 @@ function showMovieDetails(movieId) {
 
     fetch(apiUrl)
         .then(response => response.json())
-        .then(movie => displayMovieDetails(movie))
+        .then(movie => printMovieInfo(movie))
         .catch(error => console.error('Error fetching movie details:', error));
-}
-
-function displayMovieDetails(movie) {
-    const movieInfo = document.getElementById('movieInfo');
-    movieInfo.innerHTML = ''; // Clear previous movie details
-
-    const title = document.createElement('h2');
-    title.textContent = movie.title;
-
-    const overview = document.createElement('p');
-    overview.textContent = movie.overview;
-
-    const releaseDate = document.createElement('p');
-    releaseDate.textContent = `Release Date: ${movie.release_date}`;
-
-    const movieImg = document.createElement("img");
-    movieImg.style.width = "500px";
-    movieImg.src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
-
-    movieInfo.appendChild(title);
-    movieInfo.appendChild(overview);
-    movieInfo.appendChild(releaseDate);
-    movieInfo.appendChild(movieImg);
 }
 
 function printMovieInfo(movie) {
     movieInfo.innerHTML = "";
-    console.log("movie info", movie);
 
     let movieDiv = document.createElement("div");
     let movieHeadline = document.createElement("h2");
@@ -112,10 +88,70 @@ function printMovieInfo(movie) {
     let movieText = document.createElement("p");
     movieText.innerText = movie.overview;
 
+    let releaseDate = document.createElement("p");
+    releaseDate.textContent = `Release Date: ${movie.release_date}`;
+
     let movieImg = document.createElement("img");
     movieImg.style.width= "500px";
     movieImg.src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
 
-    movieDiv.append(movieHeadline, movieText, movieImg);
+    let favButton = document.createElement('button');
+    favButton.innerText = localStorage.getItem(movie.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter';
+
+favButton.addEventListener('click', function() {
+    if (localStorage.getItem(movie.id)) {
+ 
+        localStorage.removeItem(movie.id);
+        favButton.innerText = 'Lägg till som favorit';
+    } else {
+   
+        localStorage.setItem(movie.id, JSON.stringify(movie));
+        favButton.innerText = 'Ta bort från favoriter';
+    }
+
+    showFavorites();
+});
+
+
+    movieDiv.append(movieHeadline, movieText, releaseDate, favButton, movieImg);
     movieInfo.appendChild(movieDiv);
 }
+
+    let toggleFavoritesButton = document.getElementById('toggleFavorites');
+    let favoritesDiv = document.getElementById('favorites');
+
+function updateFavoritesButtonVisibility() {
+    let favorites = Object.keys(localStorage);
+    if (favorites.length > 0) {
+        toggleFavoritesButton.style.display = 'block';
+    } else {
+        toggleFavoritesButton.style.display = 'none';
+    }
+}
+
+function showFavorites() {
+    favoritesDiv.innerHTML = '';
+    let favorites = Object.keys(localStorage);
+    favorites.forEach(id => {
+        let movie = JSON.parse(localStorage.getItem(id));
+        let li = document.createElement('li');
+        li.innerText = movie.original_title;
+        li.addEventListener('click', () => printMovieInfo(movie));
+        favoritesDiv.appendChild(li);
+    });
+}
+
+function hideFavorites() {
+    favoritesDiv.innerHTML = '';
+}
+
+toggleFavoritesButton.addEventListener('click', function() {
+    if (favoritesDiv.innerHTML === '') {
+        showFavorites();
+    } else {
+        hideFavorites();
+    }
+});
+
+updateFavoritesButtonVisibility();
+

@@ -11,7 +11,6 @@ fetch("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_v
 })
 
 function printMovieList(movies) {
-//console.log("movie list", movies);
 
     movies.results.forEach(movie => {
 console.log("movie", movie);
@@ -19,7 +18,7 @@ console.log("movie", movie);
         li.innerText = movie.original_title;
 
         li.addEventListener("click", () => {
-//console.log("klick på knapp", movie.id);
+
             printMovieInfo(movie);
         })
 
@@ -31,7 +30,6 @@ console.log("movie", movie);
 function searchMovies() {
     let searchInput = document.getElementById('searchInput').value;
 
-    // Check if the search input is not empty
     if (searchInput.trim() !== '') {
         let apiUrl = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(searchInput)}&api_key=88d6f906b386ac47c004701d8f545df8`;
 
@@ -40,14 +38,14 @@ function searchMovies() {
             .then(data => displayResults(data.results))
             .catch(error => console.error('Error fetching data:', error));
     } else {
-        alert('Du angav inte en filmtitel.');
+        alert('You did not enter a movie title.');
     }
 }
 
 
 function displayResults(results) {
     let resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = ''; // Clear previous results
+    resultsContainer.innerHTML = '';
 
     if (results.length === 0) {
         resultsContainer.innerHTML = '<p>No results found.</p>';
@@ -55,13 +53,12 @@ function displayResults(results) {
     }
 
     let movieList = document.getElementById('movieList');
-    movieList.innerHTML = ''; // Clear previous movie list
+    movieList.innerHTML = '';
 
     results.forEach(movie => {
         let listItem = document.createElement('li');
         listItem.textContent = movie.title;
 
-        // Add click event to show movie details when clicked
         listItem.addEventListener('click', () => showMovieDetails(movie.id));
 
         movieList.appendChild(listItem);
@@ -69,7 +66,7 @@ function displayResults(results) {
 }
 
 function showMovieDetails(movieId) {
-    let apiKey = '88d6f906b386ac47c004701d8f545df8'; // Replace with your Movie Database API key
+    let apiKey = '88d6f906b386ac47c004701d8f545df8';
     let apiUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
 
     fetch(apiUrl)
@@ -96,17 +93,17 @@ function printMovieInfo(movie) {
     movieImg.src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
 
     let favButton = document.createElement('button');
-    favButton.innerText = localStorage.getItem(movie.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter';
+    favButton.innerText = localStorage.getItem(movie.id) ? 'Remove from favorites' : 'Add to favorites';
 
 favButton.addEventListener('click', function() {
     if (localStorage.getItem(movie.id)) {
  
         localStorage.removeItem(movie.id);
-        favButton.innerText = 'Lägg till som favorit';
+        favButton.innerText = 'Add to favorites';
     } else {
    
         localStorage.setItem(movie.id, JSON.stringify(movie));
-        favButton.innerText = 'Ta bort från favoriter';
+        favButton.innerText = 'Remove from favorites';
     }
 
     updateFavoritesButtonVisibility();
@@ -140,7 +137,7 @@ function showFavorites() {
     favorites.forEach(id => {
         let movie = JSON.parse(localStorage.getItem(id));
         let li = document.createElement('li');
-        toggleFavoritesButton.innerText = "Dölj favoriter";
+        toggleFavoritesButton.innerText = "Hide favorites";
         li.innerText = movie.original_title;
         li.addEventListener('click', () => printMovieInfo(movie));
         favoritesDiv.appendChild(li);
@@ -149,7 +146,7 @@ function showFavorites() {
 
 function hideFavorites() {
     favoritesDiv.innerHTML = '';
-    toggleFavoritesButton.innerText = "Visa favoriter";
+    toggleFavoritesButton.innerText = "Show favorites";
 }
 
 toggleFavoritesButton.addEventListener('click', function() {
@@ -163,7 +160,7 @@ toggleFavoritesButton.addEventListener('click', function() {
 updateFavoritesButtonVisibility();
 
 function clearFavorites() {
-    let confirmClear = confirm("Är du säker på att du vill rensa dina favoriter?")
+    let confirmClear = confirm("Are you sure you want to clear favorites?")
     if (confirmClear) {
 
         localStorage.clear();
@@ -173,7 +170,7 @@ function clearFavorites() {
 
         let movieInfoButtons = document.querySelectorAll('#movieInfo button');
         movieInfoButtons.forEach(button => {
-            button.innerText = 'Lägg till i favoriter';
+            button.innerText = 'Add to favorites';
 
         });
     }
@@ -186,7 +183,7 @@ function fetchGenres() {
 
     const emptyOption = document.createElement('option');
     emptyOption.value = '';
-    emptyOption.text = 'Välj en genre';
+    emptyOption.text = 'Choose a genre';
     genreSelect.appendChild(emptyOption);
 
     fetch(apiUrl)
@@ -214,7 +211,7 @@ function searchByGenre() {
             .then(data => displayResults(data.results))
             .catch(error => console.error('Error fetching data:', error));
     } else {
-        alert('Du angav inte en genre.');
+        alert('You did not choose a genre.');
     }
 }
 

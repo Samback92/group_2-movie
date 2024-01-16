@@ -92,7 +92,7 @@ function printMovieInfo(movie) {
     releaseDate.textContent = `Release Date: ${movie.release_date}`;
 
     let movieImg = document.createElement("img");
-    movieImg.style.width= "500px";
+    movieImg.style.width= "400px";
     movieImg.src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
 
     let favButton = document.createElement('button');

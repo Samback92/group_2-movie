@@ -74,41 +74,12 @@ function showMovieDetails(movieId) {
 
     fetch(apiUrl)
         .then(response => response.json())
-        .then(movie => displayMovieDetails(movie))
+        .then(movie => printMovieInfo(movie))
         .catch(error => console.error('Error fetching movie details:', error));
-}
-
-function displayMovieDetails(movie) {
-    let movieInfo = document.getElementById('movieInfo');
-    movieInfo.innerHTML = ''; // Clear previous movie details
-
-    let title = document.createElement('h2');
-    title.textContent = movie.title;
-
-    let overview = document.createElement('p');
-    overview.textContent = movie.overview;
-
-    let releaseDate = document.createElement('p');
-    releaseDate.textContent = `Release Date: ${movie.release_date}`;
-
-    let movieImg = document.createElement("img");
-    movieImg.style.width = "500px";
-    movieImg.src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
-
-    let favoriteBtn = document.createElement("button");
-    favoriteBtn.innerText = "Spara i Favoriter";
-    favoriteBtn.addEventListener("click", () => addToFavorites(movie));
-
-    movieInfo.appendChild(title);
-    movieInfo.appendChild(overview);
-    movieInfo.appendChild(releaseDate);
-    movieInfo.appendChild(movieImg);
-    movieInfo.appendChild(favoriteBtn);
 }
 
 function printMovieInfo(movie) {
     movieInfo.innerHTML = "";
-    console.log("movie info", movie);
 
     let movieDiv = document.createElement("div");
     let movieHeadline = document.createElement("h2");
@@ -117,94 +88,69 @@ function printMovieInfo(movie) {
     let movieText = document.createElement("p");
     movieText.innerText = movie.overview;
 
+    let releaseDate = document.createElement("p");
+    releaseDate.textContent = `Release Date: ${movie.release_date}`;
+
     let movieImg = document.createElement("img");
     movieImg.style.width= "500px";
     movieImg.src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
 
-    let favoriteBtn = document.createElement("button");
-    favoriteBtn.innerText = "Spara i Favoriter";
-    favoriteBtn.addEventListener("click", () => addToFavorites(movie));
+    let favButton = document.createElement('button');
+    favButton.innerText = localStorage.getItem(movie.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter';
 
-    movieDiv.append(movieHeadline, movieText, movieImg, favoriteBtn);
+favButton.addEventListener('click', function() {
+    if (localStorage.getItem(movie.id)) {
+ 
+        localStorage.removeItem(movie.id);
+        favButton.innerText = 'Lägg till som favorit';
+    } else {
+   
+        localStorage.setItem(movie.id, JSON.stringify(movie));
+        favButton.innerText = 'Ta bort från favoriter';
+    }
+
+    showFavorites();
+});
+
+
+    movieDiv.append(movieHeadline, movieText, releaseDate, favButton, movieImg);
     movieInfo.appendChild(movieDiv);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetchGenres();
-});
+    let toggleFavoritesButton = document.getElementById('toggleFavorites');
+    let favoritesDiv = document.getElementById('favorites');
 
-function fetchGenres() {
-    const apiKey = '88d6f906b386ac47c004701d8f545df8';
-    const genreSelect = document.getElementById('genreSelect');
-    const apiUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`;
-
-    const emptyOption = document.createElement('option');
-    emptyOption.value = '';
-    emptyOption.text = 'Select a genre';
-    genreSelect.appendChild(emptyOption);
-
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            data.genres.forEach(genre => {
-                const option = document.createElement('option');
-                option.value = genre.id;
-                option.text = genre.name;
-                genreSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error fetching genres:', error));
-}
-
-
-function searchByGenre() {
-    const selectedGenreId = document.getElementById('genreSelect').value;
-
-    if (selectedGenreId) {
-        const apiUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${selectedGenreId}&api_key=88d6f906b386ac47c004701d8f545df8`;
-
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => displayResults(data.results))
-            .catch(error => console.error('Error fetching data:', error));
+function updateFavoritesButtonVisibility() {
+    let favorites = Object.keys(localStorage);
+    if (favorites.length > 0) {
+        toggleFavoritesButton.style.display = 'block';
     } else {
-        alert('Please select a genre.');
+        toggleFavoritesButton.style.display = 'none';
     }
 }
-
-
-function addToFavorites(movie) {
-    if (!isMovieInFavorites(movie)) {
-        favorites.push(movie);
-        saveFavoritesToLocalStorage();
-        alert(`${movie.title} has been added to your favorites!`);
-    } else {
-        alert(`${movie.title} is already in your favorites.`);
-    }
-}
-
-function isMovieInFavorites(movie) {
-    // Kontrollera om filmen redan finns i favoriter baserat på ID eller annan identifierare
-    return favorites.some(favorite => favorite.id === movie.id);
-}
-
-function saveFavoritesToLocalStorage() {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-
-// Setup event listener for "Favoriter" button outside any function
-document.getElementById('favorites').addEventListener('click', showFavorites);
 
 function showFavorites() {
-    // Clear previous results and movie list
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('movieList').innerHTML = '';
-
-    // Load favorites from localStorage
-    favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-
-    // Display favorites
-    displayResults(favorites);
-    
+    favoritesDiv.innerHTML = '';
+    let favorites = Object.keys(localStorage);
+    favorites.forEach(id => {
+        let movie = JSON.parse(localStorage.getItem(id));
+        let li = document.createElement('li');
+        li.innerText = movie.original_title;
+        li.addEventListener('click', () => printMovieInfo(movie));
+        favoritesDiv.appendChild(li);
+    });
 }
 
+function hideFavorites() {
+    favoritesDiv.innerHTML = '';
+}
+
+toggleFavoritesButton.addEventListener('click', function() {
+    if (favoritesDiv.innerHTML === '') {
+        showFavorites();
+    } else {
+        hideFavorites();
+    }
+});
+
+updateFavoritesButtonVisibility();

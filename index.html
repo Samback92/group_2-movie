@@ -11,13 +11,8 @@
     <h1>Movies</h1>
     <input type="text" id="searchInput" placeholder="Enter movie title">
   <button onclick="searchMovies()">Search</button>
-
-<div id="genreContainer">
-  <select id="genreSelect"></select>
-  <button onclick="searchByGenre()">Search by Genre</button>
-  <button id="favorites">Favoriter</button>
-</div>
-
+  <button id="toggleFavorites" style="display: none;">Visa favoriter</button>
+<div id="favorites"></div>
 
   <div id="results"></div>
     <ul id="movieList">

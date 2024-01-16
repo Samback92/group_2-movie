@@ -10,6 +10,7 @@
 <body>
   <nav>
     <h1>Movies</h1>
+    
     <input type="text" id="searchInput" placeholder="Enter movie title">
   <button onclick="searchMovies()">Search</button>
 <div id="genreContainer">
@@ -17,12 +18,14 @@
   <button onclick="searchByGenre()">Search by Genre</button>
 </div> 
 </nav>   
-<button id="toggleFavorites" style="display: none;">Visa favoriter</button>
+<button id="toggleFavorites" style="display: none;">Show favorites</button>
+<button id="toggleClearFavoritesBtn" style="display: none;" onclick="clearFavorites()">Clear Favorites</button>
 <div id="favorites"></div>
   <div id="results"></div>   
   <div id="movieContainer">
     <ul id="movieList"></ul>
   <div id="movieInfo"></div>
   </div>
+
 </body>
 </html>

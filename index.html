@@ -8,25 +8,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <nav>
     <h1>Movies</h1>
-    <input type="text" id="searchInput" placeholder="Ange filmtitel">
-  <button onclick="searchMovies()">Sök</button>
-
-  <button id="toggleFavorites" style="display: none;">Visa favoriter</button>
-  <button id="toggleClearFavoritesBtn" style="display: none;" onclick="clearFavorites()">Rensa Favoriter</button>
-<div id="favorites"></div>
-
+    
+    <input type="text" id="searchInput" placeholder="Enter movie title">
+  <button onclick="searchMovies()">Search</button>
 <div id="genreContainer">
   <select id="genreSelect"></select>
-  <button onclick="searchByGenre()">Sök på genre</button>
-</div>
+  <button onclick="searchByGenre()">Search by Genre</button>
+</div> 
+</nav>   
+<button id="toggleFavorites" style="display: none;">Show favorites</button>
+<button id="toggleClearFavoritesBtn" style="display: none;" onclick="clearFavorites()">Clear Favorites</button>
+<div id="favorites"></div>
+  <div id="results"></div>   
+  <div id="movieContainer">
+    <ul id="movieList"></ul>
+  <div id="movieInfo"></div>
+  </div>
 
-  <div id="results"></div>
-    <ul id="movieList">
-        
-    </ul>
-    <div id="movieInfo">
-
-    </div>
 </body>
 </html>

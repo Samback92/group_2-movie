@@ -2,20 +2,81 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: black;
     color: beige;
+    margin: 0;
+    padding: 150px;
+    box-sizing: border-box;
 }
 
-#movie{
-    max-width: 200px;
+nav {
+    background-color: #333;
+    border-radius: 5px;
+    color: rgb(11, 9, 9);
+    padding: 10px;
+    text-align: center;
+    align-items: center;
 }
 
-#movieInfo{
-    max-width: 600px;
+#searchInput {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 5px;
+    cursor: pointer;
 }
 
 #genreContainer {
-    margin-top: 20px;
+    display: flex;
+    align-items: center;
 }
 
 #genreSelect {
     margin-right: 10px;
+}
+
+#movieContainer {
+    max-width: 1500px;
+    display: flex;
+    
+}
+
+#movieInfo {
+    margin-top: 10px;
+    max-width: 500px;
+    padding: 10px;
+}
+
+#movieList {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 30px;
+    
+}
+
+#movieList li {
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    max-width: 500px;
+    color: #333;
+    border-radius: 5px;
+}
+
+
+#favorites {
+    margin-top: 20px;
+}
+
+#toggleFavorites {
+    padding: 5px;
+    margin-top: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#toggleFavorites:hover {
+    background-color: #555;
 }

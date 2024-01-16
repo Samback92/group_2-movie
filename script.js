@@ -1,51 +1,52 @@
 let movieList = document.getElementById("movieList");
 let movieInfo = document.getElementById("movieInfo");
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
 console.log("Hej");
 fetch("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&api_key=88d6f906b386ac47c004701d8f545df8")
 .then(res => res.json())
 .then(data => {
-    
+
     printMovieList(data);
 })
 
 function printMovieList(movies) {
-    //console.log("movie list", movies);
+//console.log("movie list", movies);
 
-   movies.results.forEach(movie => {
-    console.log("movie", movie);
-    let li = document.createElement("li");
-    li.innerText = movie.original_title;
+    movies.results.forEach(movie => {
+console.log("movie", movie);
+        let li = document.createElement("li");
+        li.innerText = movie.original_title;
 
-    li.addEventListener("click", () => {
-        //console.log("klick på knapp", movie.id);
-        printMovieInfo(movie);
-    })
+        li.addEventListener("click", () => {
+//console.log("klick på knapp", movie.id);
+            printMovieInfo(movie);
+        })
 
-    movieList.appendChild(li);
-   });
-    
+        movieList.appendChild(li);
+    });
+
 }
 
 function searchMovies() {
-    const searchInput = document.getElementById('searchInput').value;
+    let searchInput = document.getElementById('searchInput').value;
 
     // Check if the search input is not empty
     if (searchInput.trim() !== '') {
-        const apiUrl = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(searchInput)}&api_key=88d6f906b386ac47c004701d8f545df8`;
+        let apiUrl = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(searchInput)}&api_key=88d6f906b386ac47c004701d8f545df8`;
 
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => displayResults(data.results))
-        .catch(error => console.error('Error fetching data:', error));
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => displayResults(data.results))
+            .catch(error => console.error('Error fetching data:', error));
     } else {
-      alert('Please enter a movie title.');
+        alert('Please enter a movie title.');
     }
-  }
+}
 
-  
+
 function displayResults(results) {
-    const resultsContainer = document.getElementById('results');
+    let resultsContainer = document.getElementById('results');
     resultsContainer.innerHTML = ''; // Clear previous results
 
     if (results.length === 0) {
@@ -53,11 +54,11 @@ function displayResults(results) {
         return;
     }
 
-    const movieList = document.getElementById('movieList');
+    let movieList = document.getElementById('movieList');
     movieList.innerHTML = ''; // Clear previous movie list
 
     results.forEach(movie => {
-        const listItem = document.createElement('li');
+        let listItem = document.createElement('li');
         listItem.textContent = movie.title;
 
         // Add click event to show movie details when clicked
@@ -68,9 +69,8 @@ function displayResults(results) {
 }
 
 function showMovieDetails(movieId) {
-    const apiKey = '88d6f906b386ac47c004701d8f545df8'; // Replace with your Movie Database API key
-    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
-
+    let apiKey = '88d6f906b386ac47c004701d8f545df8'; // Replace with your Movie Database API key
+    let apiUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
 
     fetch(apiUrl)
         .then(response => response.json())
@@ -154,4 +154,3 @@ toggleFavoritesButton.addEventListener('click', function() {
 });
 
 updateFavoritesButtonVisibility();
-

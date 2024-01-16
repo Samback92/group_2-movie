@@ -11,3 +11,11 @@ body {
 #movieInfo{
     max-width: 600px;
 }
+
+#genreContainer {
+    margin-top: 20px;
+}
+
+#genreSelect {
+    margin-right: 10px;
+}

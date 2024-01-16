@@ -140,6 +140,7 @@ function showFavorites() {
     favorites.forEach(id => {
         let movie = JSON.parse(localStorage.getItem(id));
         let li = document.createElement('li');
+        toggleFavoritesButton.innerText = "Dölj favoriter";
         li.innerText = movie.original_title;
         li.addEventListener('click', () => printMovieInfo(movie));
         favoritesDiv.appendChild(li);
@@ -148,6 +149,7 @@ function showFavorites() {
 
 function hideFavorites() {
     favoritesDiv.innerHTML = '';
+    toggleFavoritesButton.innerText = "Visa favoriter";
 }
 
 toggleFavoritesButton.addEventListener('click', function() {

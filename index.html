@@ -9,15 +9,16 @@
 </head>
 <body>
     <h1>Movies</h1>
-    <input type="text" id="searchInput" placeholder="Enter movie title">
-  <button onclick="searchMovies()">Search</button>
+    <input type="text" id="searchInput" placeholder="Ange filmtitel">
+  <button onclick="searchMovies()">Sök</button>
 
   <button id="toggleFavorites" style="display: none;">Visa favoriter</button>
+  <button id="toggleClearFavoritesBtn" style="display: none;" onclick="clearFavorites()">Rensa Favoriter</button>
 <div id="favorites"></div>
 
 <div id="genreContainer">
   <select id="genreSelect"></select>
-  <button onclick="searchByGenre()">Search by Genre</button>
+  <button onclick="searchByGenre()">Sök på genre</button>
 </div>
 
   <div id="results"></div>
